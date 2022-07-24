@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix: # TODO: https://michaelheap.com/dynamic-matrix-generation-github-actions/
-        KUBECTL_VERSION: ["1.23.9"]
+        KUBECTL_VERSION: ["1.22.12", "1.23.9", "1.24.3"]
     steps:
       - uses: actions/checkout@v3
       - uses: docker/setup-qemu-action@v2
@@ -21,7 +21,7 @@ jobs:
           images: ghcr.io/ryodocx/docker-kubectl
           flavor: |
             latest=false
-            prefix=v{{matrix.KUBECTL_VERSION}}-v
+            prefix=v${{matrix.KUBECTL_VERSION}}-
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
