@@ -18,7 +18,7 @@ jobs:
       - uses: docker/metadata-action@v4
         id: meta
         with:
-          images: ghcr.io/ryodocx/testserver
+          images: ghcr.io/ryodocx/docker-kubectl
           flavor: |
             latest=false
             prefix=v{{matrix.KUBECTL_VERSION}}-v
