@@ -8,7 +8,6 @@ COPY util.sh .
 
 FROM workspace AS kubectl
 ARG KUBECTL_VERSION
-RUN source util.sh && echo wget -q "https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/$(getos)/$(getarch)/kubectl" 1>&2 && return 1
 RUN source util.sh && wget -q "https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/$(getos)/$(getarch)/kubectl"
 RUN chmod +x kubectl
 
