@@ -17,3 +17,17 @@ getarch() {
     ;;
   esac
 }
+
+getarch2() {
+  case $(uname -m) in
+  aarch64)
+    echo 386
+    ;;
+  x86_64)
+    echo amd64
+    ;;
+  *)
+    echo unknown
+    ;;
+  esac
+}

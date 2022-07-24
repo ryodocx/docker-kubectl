@@ -1,6 +1,7 @@
 ARG KUBECTL_VERSION=1.24.3 # override by github actions
 ARG ALPINE_VERSION=3.16.1
 ARG ARGO_ROLLOUTS_VERSION=1.2.1
+ARG VEGETA_VERSION=12.8.4
 ARG APK_PACKAGES="curl jq"
 
 FROM alpine:${ALPINE_VERSION} AS workspace
@@ -16,12 +17,18 @@ ARG ARGO_ROLLOUTS_VERSION
 RUN source util.sh && wget -q -O kubectl-argo-rollouts "https://github.com/argoproj/argo-rollouts/releases/download/v${ARGO_ROLLOUTS_VERSION}/kubectl-argo-rollouts-$(getos)-$(getarch)"
 RUN chmod +x kubectl-argo-rollouts
 
+FROM workspace AS vegeta
+ARG VEGETA_VERSION
+RUN source util.sh && wget -q "https://github.com/tsenart/vegeta/releases/download/v${VEGETA_VERSION}/vegeta_${VEGETA_VERSION}_$(getos)_$(getarch2).tar.gz" -O - | tar -xz -C / -f - vegeta
+RUN chmod +x vegeta
+
 # output
 FROM alpine:${ALPINE_VERSION}
 
 ARG APK_PACKAGES
 RUN apk add ${APK_PACKAGES}
 
+COPY --from=vegeta /vegeta /usr/local/bin/
 COPY --from=argo-rollouts /kubectl-argo-rollouts /usr/local/bin/
 COPY --from=kubectl /kubectl /usr/local/bin/
 
