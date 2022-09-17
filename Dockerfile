@@ -1,9 +1,9 @@
-ARG KUBECTL_VERSION=1.24.3 # override by github actions
-ARG ARGO_ROLLOUTS_VERSION=1.2.1
+ARG KUBECTL_VERSION=1.25.1 # override by github actions
+ARG ARGO_ROLLOUTS_VERSION=1.2.2
 ARG VEGETA_VERSION=12.8.4
 ARG APK_PACKAGES="curl jq"
 
-FROM alpine:3.16.1 AS workspace
+FROM alpine:3.16.2 AS workspace
 COPY util.sh .
 
 FROM workspace AS kubectl
@@ -22,7 +22,7 @@ RUN source util.sh && wget -q "https://github.com/tsenart/vegeta/releases/downlo
 RUN chmod +x vegeta
 
 # output
-FROM alpine:3.16.1
+FROM alpine:3.16.2
 
 ARG APK_PACKAGES
 RUN apk add ${APK_PACKAGES}
