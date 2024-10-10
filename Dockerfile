@@ -3,7 +3,7 @@ ARG ARGO_ROLLOUTS_VERSION=1.3.2
 ARG VEGETA_VERSION=12.8.4
 ARG APK_PACKAGES="curl jq"
 
-FROM alpine:3.20.2 AS workspace
+FROM alpine:3.20.3 AS workspace
 COPY util.sh .
 
 FROM workspace AS kubectl
@@ -22,7 +22,7 @@ RUN source util.sh && wget -q "https://github.com/tsenart/vegeta/releases/downlo
 RUN chmod +x vegeta
 
 # output
-FROM alpine:3.20.2
+FROM alpine:3.20.3
 
 ARG APK_PACKAGES
 RUN apk add ${APK_PACKAGES}
